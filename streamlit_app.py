@@ -79,14 +79,11 @@ class Animation:
     def clear(self):
         del self.out
 
+
 animation = Animation()
 my_image = st.image(animation.get_frame(), caption='Animated launch event', width=600)
-t = 0
-while t < 200:
-    time.sleep(0.0125)
-    my_image.image(animation.get_frame(t), caption='Animated launch event', width=600)
-    t += 1
-animation.clear()
+t = st.slider('Slide time', 0, 200)
+my_image.image(animation.get_frame(t), caption='Animated launch event', width=600)
 
 """
 ## Literature
