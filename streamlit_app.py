@@ -18,9 +18,8 @@ with right:
     and the spatio-temporal proximity between cause and effect can be observed. Hume illustrates his thesis 
     with the collision of two billiard balls. The necessity with which the effect (movement) seems to follow
     the cause (impact) is due to preceding experiences and a completely subjective addition. The subject 
-    interprets the observable spatio-temporal events in terms of unobservable causal relations. A majority
-    of modern theoreticians of science regard this as an important and correct discovery by Hume (Stegmüller 1983)
-    and many psychologists share Hume's view:
+    interprets the observable spatio-temporal events in terms of unobservable causal relations.
+    Many modern psychologists share Hume's view:
     "Because causal relations are neither observable nor deducible, they must be induced from observable events" (Cheng 1997, p. 367).
     "It is logically impossible to observe causal processes per se" (Ross & Fletcher 1985, p. 112).
     """
