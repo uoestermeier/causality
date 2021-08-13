@@ -1,4 +1,6 @@
 import streamlit as st
+import streamlit.components.v1 as components
+
 import numpy as np
 import time
 from PIL import Image, ImageDraw
@@ -84,6 +86,15 @@ animation = Animation()
 my_image = st.image(animation.get_frame(), caption='Animated launch event', width=600)
 t = st.slider('Slide time', 0, 200)
 my_image.image(animation.get_frame(t), caption='Animated launch event', width=600)
+
+
+
+
+# bootstrap 4 collapse example
+components.html(
+    open('animations/michotte.html').read(),
+    height=600,
+)
 
 """
 ## Literature

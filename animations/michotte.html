@@ -1,0 +1,125 @@
+<style>
+    html,
+    body {
+        height: 100%;
+        background-color: #333;
+        color: #ccc;
+    }
+    
+    .container {
+        position: relative;
+    }
+    
+    .draggable {
+        padding: 5px;
+        height: 600px;
+        width: 600px;
+        position: absolute;
+        background: green;
+        border-radius: 50%;
+        text-align: center;
+        color: #7CFC00;
+        font-family: arial
+    }
+    
+    .handle {
+        height: 30px;
+        width: 30px;
+        left: 95px;
+        top: 95px;
+        position: absolute;
+        background: #7CFC00;
+        border-radius: 100%;
+    }
+    
+    .window {
+        position: absolute;
+        height: 20px;
+        width: 200px;
+        left: 50px;
+        top: 285px;
+        border-radius: 10px;
+        border: 4px solid red;
+    }
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/Draggable.min.js"></script>
+<script>
+    function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
+        let angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
+        return {
+            x: centerX + (radius * Math.cos(angleInRadians)),
+            y: centerY + (radius * Math.sin(angleInRadians))
+        };
+    }
+
+    function describeArc(x, y, radius, startAngle, endAngle) {
+
+        let start = polarToCartesian(x, y, radius, endAngle);
+        let end = polarToCartesian(x, y, radius, startAngle);
+        let largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
+
+        let d = [
+            "M", start.x, start.y,
+            "A", radius, radius, 0, largeArcFlag, 0, end.x, end.y
+        ].join(" ");
+
+        return d;
+    }
+
+    function describeMichotteArcs(x, y, radius1, startAngle1, endAngle1, radius2, startAngle2, endAngle2) {
+        let start1 = polarToCartesian(x, y, radius1, startAngle1);
+        let end1 = polarToCartesian(x, y, radius1, endAngle1);
+        let largeArcFlag1 = endAngle1 - startAngle1 <= 180 ? "0" : "1";
+
+        let start2 = polarToCartesian(x, y, radius2, startAngle2);
+        let end2 = polarToCartesian(x, y, radius2, endAngle2);
+        let largeArcFlag2 = endAngle2 - startAngle2 <= 180 ? "0" : "1";
+
+        let d = [
+            "M", start1.x, start1.y,
+            "A", radius1, radius1, 0, largeArcFlag1, 1, end1.x, end1.y,
+            "L", start2.x, start2.y,
+            "A", radius2, radius2, 0, largeArcFlag2, 1, end2.x, end2.y,
+        ].join(" ");
+
+        return d;
+    }
+</script>
+<p>Click the green circle to rotate<br></p>
+<div class="container">
+    <div class="draggable">
+        <svg width="100%" height="100%" viewBox="0 0 600 600">
+        <circle cx="300" cy="300" r="250" fill="white"/>
+
+        <path id="arc1" stroke="black" fill="white" stroke-width="20" />
+        <path id="arc2" stroke="black" fill="white" stroke-width="20" />
+    </svg>
+        <div class="handle"></div>
+    </div>
+    <div class="window"></div>
+</div>
+
+<script>
+    arc1.setAttribute("d", describeMichotteArcs(300, 300, 200, 220, 310, 150, 355, 120));
+
+    arc2.setAttribute("d", describeMichotteArcs(300, 300, 130, 220, 360, 100, 45, 120));
+
+    let drag = $(".draggable"),
+        handle = $(".handle");
+    let R = Draggable.create(drag, {
+        type: "rotation",
+        allowEventDefault: true,
+    })[0].disable();
+
+
+    handle.on("mousedown", function(event) {
+        event.stopPropagation();
+        R.enable().startDrag(event);
+    });
+
+    drag.on("mousedown", function(event) {
+        R.disable();
+    });
+</script>
