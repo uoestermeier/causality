@@ -4,47 +4,16 @@
         height: 100%;
         background-color: #333;
         color: #ccc;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     }
-    
-    .container {
-        position: relative;
-    }
-    
-    .draggable {
-        padding: 5px;
-        height: 600px;
-        width: 600px;
-        position: absolute;
-        background: green;
-        border-radius: 50%;
-        text-align: center;
-        color: #7CFC00;
-        font-family: arial
-    }
-    
-    .handle {
-        height: 30px;
-        width: 30px;
-        left: 95px;
-        top: 95px;
-        position: absolute;
-        background: #7CFC00;
-        border-radius: 100%;
-    }
-    
-    .window {
-        position: absolute;
-        height: 20px;
-        width: 200px;
-        left: 50px;
-        top: 285px;
-        border-radius: 10px;
-        border: 4px solid red;
+    p {
+        margin-left: auto;
+        margin-right: auto;
     }
 </style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/Draggable.min.js"></script>
+<script src="https://wissensdurst.iwm-tuebingen.de/gsap/minified/gsap.min.js"></script>
+<script src="https://wissensdurst.iwm-tuebingen.de/gsap/minified/Draggable.min.js"></script>	
+<script src="https://wissensdurst.iwm-tuebingen.de/gsap/minified/InertiaPlugin.min.js"></script>
 <script>
     function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
         let angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
@@ -87,39 +56,47 @@
         return d;
     }
 </script>
-<p>Click the green circle to rotate<br></p>
-<div class="container">
-    <div class="draggable">
-        <svg width="100%" height="100%" viewBox="0 0 600 600">
-        <circle cx="300" cy="300" r="250" fill="white"/>
-
-        <path id="arc1" stroke="black" fill="white" stroke-width="20" />
-        <path id="arc2" stroke="black" fill="white" stroke-width="20" />
+<div>
+     <svg width="100%"  viewBox="0 0 600 600">
+        <g id="group">
+            <mask id="myMask">
+                <rect x="0" y="150" width="300" height="300" fill="white" />
+                <rect x="50" y="295" width="200" height="10" fill="black" rx="5" ry="5"/>
+            </mask>
+            <text x="40" y="35" fill="white" class="heavy">Click and drag circle to rotate, click black cover to animate</text>
+            <g id="disc" >
+                <circle cx="300" cy="300" r="250" fill="white"/>
+                <path id="arc1" stroke="red" fill="white" stroke-width="10" />
+                <path id="arc2" stroke="blue" fill="white" stroke-width="10" />
+            </g>
+            <rect id="cover" x="0" y="150" width="300" height="300" fill="black" onclick="animate()" mask="url(#myMask)" />
+            <text x="70" y="420" fill="white" class="heavy">Michottes launch event</text>
+        </g>
     </svg>
-        <div class="handle"></div>
-    </div>
-    <div class="window"></div>
 </div>
-
 <script>
-    arc1.setAttribute("d", describeMichotteArcs(300, 300, 200, 220, 310, 150, 355, 120));
+    let animated = false
 
-    arc2.setAttribute("d", describeMichotteArcs(300, 300, 130, 220, 360, 100, 45, 120));
-
-    let drag = $(".draggable"),
-        handle = $(".handle");
-    let R = Draggable.create(drag, {
+    arc1.setAttribute("d", describeMichotteArcs(300, 300, 240, 220, 310, 190, 355, 120));
+    arc2.setAttribute("d", describeMichotteArcs(300, 300, 180, 220, 360, 150, 40, 120));
+    gsap.set(disc, {transformOrigin: '50% 50%'});
+    gsap.set(cover, {transformOrigin: '50% 100%'});
+    Draggable.create(disc, {
         type: "rotation",
         allowEventDefault: true,
-    })[0].disable();
-
-
-    handle.on("mousedown", function(event) {
-        event.stopPropagation();
-        R.enable().startDrag(event);
+        inertia: true
     });
 
-    drag.on("mousedown", function(event) {
-        R.disable();
-    });
+    function animate() {
+        if (animated) {
+            gsap.to([group], { scale: 1, y: "+=290" })
+        }
+        else {
+            gsap.to([group], { scale: 2, y: "-=290" })
+            gsap.to([disc], { rotate: 0 })
+            gsap.to([disc], { delay: 2, duration: 2, rotate: -180 })
+        }
+        animated = !animated;
+    };
+
 </script>
