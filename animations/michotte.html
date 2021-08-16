@@ -23,6 +23,13 @@
         };
     }
 
+    function betweenPoints(x1, y1, x2, y2, dx=0, dy=0) {
+        return {
+            x: (x1 + x2) / 2 + dx,
+            y: (y1 + y2) / 2 + dy
+        }
+    }
+
     function describeArc(x, y, radius, startAngle, endAngle) {
 
         let start = polarToCartesian(x, y, radius, endAngle);
@@ -37,7 +44,7 @@
         return d;
     }
 
-    function describeMichotteArcs(x, y, radius1, startAngle1, endAngle1, radius2, startAngle2, endAngle2) {
+    function describeMichotteArcs(x, y, radius1, startAngle1, endAngle1, radius2, startAngle2, endAngle2, dx=0, dy=ß) {
         let start1 = polarToCartesian(x, y, radius1, startAngle1);
         let end1 = polarToCartesian(x, y, radius1, endAngle1);
         let largeArcFlag1 = endAngle1 - startAngle1 <= 180 ? "0" : "1";
@@ -46,10 +53,11 @@
         let end2 = polarToCartesian(x, y, radius2, endAngle2);
         let largeArcFlag2 = endAngle2 - startAngle2 <= 180 ? "0" : "1";
 
+        let between = betweenPoints(end1.x, end1.y, start2.x, start2.y)
         let d = [
             "M", start1.x, start1.y,
             "A", radius1, radius1, 0, largeArcFlag1, 1, end1.x, end1.y,
-            "L", start2.x, start2.y,
+            "Q", between.x + dx, between.y + dy, start2.x, start2.y,
             "A", radius2, radius2, 0, largeArcFlag2, 1, end2.x, end2.y,
         ].join(" ");
 
@@ -77,8 +85,8 @@
 <script>
     let animated = false
 
-    arc1.setAttribute("d", describeMichotteArcs(300, 300, 240, 220, 310, 190, 355, 120));
-    arc2.setAttribute("d", describeMichotteArcs(300, 300, 180, 220, 360, 150, 40, 120));
+    arc1.setAttribute("d", describeMichotteArcs(300, 300, 240, 220, 310, 190, 355, 120, -10, -20));
+    arc2.setAttribute("d", describeMichotteArcs(300, 300, 180, 220, 360, 150, 40, 120, 10, -20));
     gsap.set(disc, {transformOrigin: '50% 50%'});
     gsap.set(cover, {transformOrigin: '50% 100%'});
     Draggable.create(disc, {
