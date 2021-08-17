@@ -89,14 +89,15 @@ class Animation:
     def clear(self):
         del self.out
 
+from streamlit_custom_animation import st_custom_animation
+st_custom_animation('Animation goes here')
 
+# from streamlit_custom_slider import st_custom_slider
 
-from streamlit_custom_slider import st_custom_slider
-
-animation = Animation()
-t = st_custom_slider('Slide time', 0, 200)
-my_image = st.image(animation.get_frame(), caption='Animated launch event', width=600)
-my_image.image(animation.get_frame(t), caption='Animated launch event', width=600)
+# animation = Animation()
+# t = st_custom_slider('Slide time', 0, 200)
+# my_image = st.image(animation.get_frame(), caption='Animated launch event', width=600)
+# my_image.image(animation.get_frame(t), caption='Animated launch event', width=600)
 
 
 

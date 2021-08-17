@@ -13,7 +13,7 @@ from typing import Tuple
 
 parent_dir = os.path.dirname(os.path.abspath(__file__))
 build_dir = os.path.join(parent_dir, "frontend/build")
-_component_func = components.declare_component("new_component_name", path=build_dir)
+_component_func = components.declare_component("custom_slider", path=build_dir)
    
 
 # Edit arguments sent and result received from React component, so the initial input is converted to an array and returned value extracted from the component
