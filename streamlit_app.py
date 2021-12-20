@@ -7,6 +7,31 @@ from PIL import Image, ImageDraw
 
 st.title('Phenomenal Causality')
 
+
+# option_names = ["Introduction", "Building Blocks", "Missing Steps"]
+
+# output_container = st.empty()
+
+# next = st.button("Next")
+# if next:
+#     if st.session_state["radio_option"] == 'Introduction':
+#         st.session_state.radio_option = 'Introduction'
+#     elif st.session_state["radio_option"] == 'b':
+#         st.session_state.radio_option = 'c'
+#     else:
+#         st.session_state.radio_option = 'a'
+
+# option = st.sidebar.radio("Pick an option", option_names , key="radio_option")
+# st.session_state
+
+# if option == 'a':
+#     output_container.write("You picked 'a' :smile:")
+# elif option == 'b':
+#     output_container.write("You picked 'b' :heart:")
+# else:
+#     output_container.write("You picked 'c' :rocket:")
+
+
 """
 """
 
@@ -52,6 +77,14 @@ with col2:
     """
     
 
+
+# bootstrap 4 collapse example
+components.html(
+    open('animations/michotte.html').read(),
+    height=640
+)
+
+
 class Animation:
 
     width = 600
@@ -81,20 +114,18 @@ class Animation:
     def clear(self):
         del self.out
 
+from streamlit_custom_animation import st_custom_animation
+st_custom_animation('Animation goes here')
 
-animation = Animation()
-my_image = st.image(animation.get_frame(), caption='Animated launch event', width=600)
-t = st.slider('Slide time', 0, 200)
-my_image.image(animation.get_frame(t), caption='Animated launch event', width=600)
+# from streamlit_custom_slider import st_custom_slider
+
+# animation = Animation()
+# t = st_custom_slider('Slide time', 0, 200)
+# my_image = st.image(animation.get_frame(), caption='Animated launch event', width=600)
+# my_image.image(animation.get_frame(t), caption='Animated launch event', width=600)
 
 
 
-
-# bootstrap 4 collapse example
-components.html(
-    open('animations/michotte.html').read(),
-    height=600,
-)
 
 """
 ## Literature
